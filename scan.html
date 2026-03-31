@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="مسح رمز QR - محفظة جيب">
+    <title>مسح QR — محفظة جيب</title>
+    <link rel="stylesheet" href="css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/scan.css">
+        
+</head>
+<body>
+
+    <!-- ── Header ── -->
+    <div class="scan-header animate-up">
+        <a href="paragram5.html" class="back-btn"><i class="bi bi-chevron-right"></i></a>
+        <h5>مسح QR</h5>
+        <div style="width:42px;"></div>
+    </div>
+
+    <!-- ── Scanner ── -->
+    <div class="scanner-container">
+        <div class="camera-feed" id="cameraFeed">
+            <video id="cameraVideo" autoplay playsinline muted></video>
+        </div>
+
+        <div class="overlay-mask"></div>
+
+        <div class="scan-frame-wrapper animate-up delay-1">
+            <div class="scan-frame">
+                <div class="scan-corner corner-tl"></div>
+                <div class="scan-corner corner-tr"></div>
+                <div class="scan-corner corner-bl"></div>
+                <div class="scan-corner corner-br"></div>
+                <div class="scan-line"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Bottom Instructions ── -->
+    <div class="scan-instructions animate-up delay-2">
+        <div class="scan-title">وجّه الكاميرا نحو رمز QR</div>
+        <div class="scan-subtitle">ضع الرمز داخل الإطار وسيتم المسح تلقائياً</div>
+        <div class="scan-actions">
+            <button class="scan-action-btn" id="torchBtn" onclick="toggleTorch()">
+                <div class="scan-action-icon" style="background:rgba(255,210,0,0.1);">
+                    <i class="bi bi-lightning-fill" style="color:#ffd200;" id="torchIcon"></i>
+                </div>
+                <span id="torchLabel">إضاءة</span>
+            </button>
+            <button class="scan-action-btn" onclick="showMyQR()">
+                <div class="scan-action-icon" style="background:rgba(255,61,68,0.1);">
+                    <i class="bi bi-qr-code" style="color:#ff3d44;"></i>
+                </div>
+                <span>رمزي</span>
+            </button>
+            <button class="scan-action-btn" onclick="openGallery()">
+                <div class="scan-action-icon" style="background:rgba(0,210,255,0.1);">
+                    <i class="bi bi-image" style="color:#00d2ff;"></i>
+                </div>
+                <span>من الصور</span>
+            </button>
+            <a href="history.html" class="scan-action-btn">
+                <div class="scan-action-icon" style="background:rgba(56,239,125,0.1);">
+                    <i class="bi bi-clock-history" style="color:#38ef7d;"></i>
+                </div>
+                <span>السجل</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- ── My QR Sheet ── -->
+    <div class="qr-result-sheet" id="myQRSheet">
+        <div class="qr-backdrop" onclick="closeMyQR()"></div>
+        <div class="qr-sheet-content">
+            <div class="sheet-handle"></div>
+            <div class="my-qr-card">
+                <div class="qr-display" id="qrCanvas">
+                    <!-- QR will be drawn here -->
+                </div>
+                <div class="qr-user-info">
+                    <div class="fw-bold" style="font-size:1rem;" id="qrUserName">—</div>
+                    <div style="color:var(--text-muted);font-size:0.8rem;" id="qrUserPhone">—</div>
+                    <small style="color:var(--text-muted);font-size:0.65rem;">امسح هذا الرمز لتحويل أموال إلى حسابي</small>
+                </div>
+            </div>
+            <div class="d-flex gap-2 mt-3">
+                <button class="btn flex-fill py-3 fw-bold" style="background:var(--primary-gradient);border:none;border-radius:16px;color:white;font-size:0.85rem;" onclick="shareQR()">
+                    <i class="bi bi-share me-2"></i>مشاركة
+                </button>
+                <button class="btn flex-fill py-3 fw-bold" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:16px;color:white;font-size:0.85rem;" onclick="closeMyQR()">
+                    إغلاق
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Scan Result Sheet ── -->
+    <div class="qr-result-sheet" id="resultSheet">
+        <div class="qr-backdrop" onclick="closeResult()"></div>
+        <div class="qr-sheet-content">
+            <div class="sheet-handle"></div>
+            <div class="text-center mb-4">
+                <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle" style="width:64px;height:64px;background:rgba(56,239,125,0.1);">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size:1.8rem;"></i>
+                </div>
+                <div class="fw-bold" style="font-size:1rem;">تم مسح الرمز بنجاح</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:16px;">
+                <div class="d-flex justify-content-between align-items-center mb-2" style="font-size:0.82rem;">
+                    <span style="color:var(--text-muted);">المحتوى</span>
+                    <span class="fw-medium" id="resultContent" style="word-break:break-all;max-width:200px;text-align:left;" dir="ltr">—</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center" style="font-size:0.82rem;">
+                    <span style="color:var(--text-muted);">النوع</span>
+                    <span class="fw-medium" id="resultType">—</span>
+                </div>
+            </div>
+            <div class="d-flex gap-2 mt-3">
+                <button class="btn flex-fill py-3 fw-bold" id="resultActionBtn" style="background:var(--primary-gradient);border:none;border-radius:16px;color:white;font-size:0.85rem;">
+                    <i class="bi bi-arrow-up-right me-2"></i>فتح
+                </button>
+                <button class="btn flex-fill py-3 fw-bold" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:16px;color:white;font-size:0.85rem;" onclick="closeResult()">
+                    إغلاق
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="galleryInput" accept="image/*" style="display:none;">
+
+<script>
+    let torchOn = false;
+    let currentStream = null;
+
+    // ── Start Camera ──
+    async function startCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
+            });
+            currentStream = stream;
+            const video = document.getElementById('cameraVideo');
+            video.srcObject = stream;
+            video.play();
+        } catch(err) {
+            console.log('Camera not available:', err);
+            document.getElementById('cameraFeed').innerHTML =
+                '<div class="text-center p-4">' +
+                '<i class="bi bi-camera-video-off d-block mb-3" style="font-size:3rem;opacity:0.15;"></i>' +
+                '<p style="color:var(--text-muted);font-size:0.85rem;">لم يتم السماح بالوصول للكاميرا</p>' +
+                '<small style="color:var(--text-muted);font-size:0.7rem;">يمكنك مسح رمز QR من الصور</small>' +
+                '</div>';
+        }
+    }
+
+    // ── Toggle Torch ──
+    function toggleTorch() {
+        if (!currentStream) return;
+        const track = currentStream.getVideoTracks()[0];
+        if (!track) return;
+        torchOn = !torchOn;
+        try {
+            track.applyConstraints({ advanced: [{ torch: torchOn }] });
+        } catch(e) {}
+        const btn = document.getElementById('torchBtn');
+        const label = document.getElementById('torchLabel');
+        if (torchOn) {
+            btn.classList.add('torch-active');
+            label.textContent = 'إطفاء';
+        } else {
+            btn.classList.remove('torch-active');
+            label.textContent = 'إضاءة';
+        }
+    }
+
+    // ── Show My QR ──
+    function showMyQR() {
+        const loggedIn = JSON.parse(sessionStorage.getItem('loggedInUser'));
+        if (loggedIn) {
+            document.getElementById('qrUserName').textContent = loggedIn.name;
+            document.getElementById('qrUserPhone').textContent = loggedIn.phone;
+            generateSimpleQR(loggedIn.phone);
+        } else {
+            document.getElementById('qrUserName').textContent = 'زائر';
+            document.getElementById('qrUserPhone').textContent = '—';
+            generateSimpleQR('JAYZ-WALLET');
+        }
+        document.getElementById('myQRSheet').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMyQR() {
+        document.getElementById('myQRSheet').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    // ── Simple QR Code Generator (Canvas-based) ──
+    function generateSimpleQR(data) {
+        const container = document.getElementById('qrCanvas');
+        const size = 160;
+        container.innerHTML = '';
+
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        // White background
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, size, size);
+
+        // Generate pattern from data
+        const cellSize = 4;
+        const gridSize = Math.floor(size / cellSize);
+        const margin = 4;
+
+        ctx.fillStyle = '#1a1a2e';
+
+        // Position detection patterns (3 corners)
+        drawFinderPattern(ctx, margin, margin, cellSize);
+        drawFinderPattern(ctx, (gridSize - 7 - margin) * cellSize, margin, cellSize);
+        drawFinderPattern(ctx, margin, (gridSize - 7 - margin) * cellSize, cellSize);
+
+        // Data area - deterministic pattern based on input
+        let hash = 0;
+        for (let i = 0; i < data.length; i++) {
+            hash = ((hash << 5) - hash + data.charCodeAt(i)) | 0;
+        }
+
+        for (let row = margin; row < gridSize - margin; row++) {
+            for (let col = margin; col < gridSize - margin; col++) {
+                if (isInFinderZone(row, col, gridSize, margin)) continue;
+                const n = Math.abs((hash * (row * 37 + col * 13 + 7)) % 100);
+                if (n < 42) {
+                    ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+                }
+            }
+        }
+
+        // Brand center logo
+        const logoSize = 24;
+        const logoX = (size - logoSize) / 2;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(logoX - 3, logoX - 3, logoSize + 6, logoSize + 6);
+        ctx.fillStyle = '#ff3d44';
+        ctx.beginPath();
+        ctx.roundRect(logoX, logoX, logoSize, logoSize, 4);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 10px Cairo, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('J', size / 2, size / 2 + 1);
+
+        container.appendChild(canvas);
+    }
+
+    function drawFinderPattern(ctx, x, y, cell) {
+        // Outer border
+        ctx.fillStyle = '#1a1a2e';
+        ctx.fillRect(x, y, 7 * cell, 7 * cell);
+        // Inner white
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(x + cell, y + cell, 5 * cell, 5 * cell);
+        // Center dot
+        ctx.fillStyle = '#ff3d44';
+        ctx.fillRect(x + 2 * cell, y + 2 * cell, 3 * cell, 3 * cell);
+    }
+
+    function isInFinderZone(row, col, gridSize, margin) {
+        const s = margin + 8;
+        const e = gridSize - margin - 8;
+        if (row < s && col < s) return true;
+        if (row < s && col > e) return true;
+        if (row > e && col < s) return true;
+        return false;
+    }
+
+    // ── Gallery Pick ──
+    function openGallery() {
+        document.getElementById('galleryInput').click();
+    }
+
+    document.getElementById('galleryInput').addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            // Simulate scan result
+            showResult('تم استيراد صورة QR', 'صورة');
+        }
+    });
+
+    // ── Show Result ──
+    function showResult(content, type) {
+        document.getElementById('resultContent').textContent = content;
+        document.getElementById('resultType').textContent = type || 'نص';
+
+        const actionBtn = document.getElementById('resultActionBtn');
+        if (content.startsWith('http')) {
+            actionBtn.onclick = function() { window.open(content, '_blank'); };
+            actionBtn.innerHTML = '<i class="bi bi-box-arrow-up-right me-2"></i>فتح الرابط';
+        } else {
+            actionBtn.onclick = function() {
+                navigator.clipboard && navigator.clipboard.writeText(content);
+                actionBtn.innerHTML = '<i class="bi bi-check2 me-2"></i>تم النسخ!';
+                setTimeout(function() {
+                    actionBtn.innerHTML = '<i class="bi bi-clipboard me-2"></i>نسخ';
+                }, 2000);
+            };
+            actionBtn.innerHTML = '<i class="bi bi-clipboard me-2"></i>نسخ';
+        }
+
+        document.getElementById('resultSheet').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeResult() {
+        document.getElementById('resultSheet').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    // ── Share QR ──
+    function shareQR() {
+        const loggedIn = JSON.parse(sessionStorage.getItem('loggedInUser'));
+        const name = loggedIn ? loggedIn.name : 'مستخدم JAYZ';
+        const phone = loggedIn ? loggedIn.phone : '';
+
+        if (navigator.share) {
+            navigator.share({
+                title: 'رمز QR - محفظة JAYZ',
+                text: 'حوّل لي عبر محفظة JAYZ\nالاسم: ' + name + '\nالرقم: ' + phone
+            });
+        } else {
+            var text = 'حوّل لي عبر محفظة JAYZ - الاسم: ' + name + ' - الرقم: ' + phone;
+            navigator.clipboard && navigator.clipboard.writeText(text);
+            alert('تم نسخ بيانات الحساب ✓');
+        }
+    }
+
+    // ── Init ──
+    startCamera();
+</script>
+</body>
+</html>

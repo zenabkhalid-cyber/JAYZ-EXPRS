@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحويل إلى مشترك</title>
+    <link rel="stylesheet" href="css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/transfer1.css">
+</head>
+<body>
+
+<div class="app-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="paragram7.html" class="text-white"><i class="bi bi-chevron-right"></i></a>
+        <h5 class="m-0 fw-bold">ارسال حوالة شبكة تحويل</h5>
+        <div style="width: 24px;"></div>
+    </div>
+
+    <div class="text-center mb-4">
+        <div class="icon-box">
+        <i class="bi bi-send-plus"></i>
+        </div>
+    </div>
+
+    <label class="input-label">حساب المحفظة</label>
+    <div class="d-flex custom-group mb-4">
+        <button class="btn p-0 px-2 shadow-none" id="eyeBtn">
+            <i class="far fa-eye-slash text-danger" id="eyeIcon"></i>
+        </button>
+        <select class="form-select" id="currencySelector">
+            <option data-label="ريال يمني" data-val="240,500">ريال يمني | *</option>
+            <option data-label="ريال سعودي" data-val="2,500">ريال سعودي | *</option>
+            <option data-label="دولار امريكي" data-val="400">دولار امريكي | *</option>
+        </select>
+    </div> 
+        <div class="custom-group mb-4 p-1">
+        <input type="text" class="form-control" placeholder="الاسم الكامل      ">
+    </div>
+
+    <div class="d-flex gap-2 align-items-center mb-1">
+         <div class="input-group custom-group flex-grow-1 p-0 overflow-hidden">
+            <span class="input-group-text bg-transparent border-0 text-secondary border-end border-secondary rounded-0">
+                <i class="far fa-address-book"></i>
+            </span>
+            <input type="text" id="phoneInput" class="form-control" placeholder="رقم الموبايل">
+        </div>
+        <button class="square-btn"><i class="fas fa-qrcode"></i></button>
+        
+        <div class="position-relative">
+            <button class="square-btn" id="favBtn"><i class="far fa-heart"></i></button>
+            <div id="favMenu" class="fav-dropdown" style="display: none;">
+                <ul>
+                    <li onclick="fillPhone('777111222')">أحمد علي</li>
+                    <li onclick="fillPhone('771000222')">مركز الوفاء</li>
+                </ul>
+            </div>
+        </div>
+      
+       
+    </div>
+    <p class="text-secondary mt-1 mb-4" style="font-size: 0.7rem;">يمكنك استخدام الرقم البديل أو رقم الموبايل للتحويل إلى مشترك</p>
+
+    <div class="custom-group mb-3 p-1">
+        <input type="number" id="amountField" class="form-control" placeholder="المبلغ">
+    </div>
+   
+
+    <button id="payBtn" class="btn-submit">استمرار</button>
+</div>
+
+<div id="successLayer" class="success-overlay" style="display: none;">
+    <div class="check-circle"><i class="fas fa-check"></i></div>
+    <h3 class="fw-bold text-white">نجحت العملية</h3>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // تعريف العناصر بشكل صحيح
+        const eyeBtn = document.getElementById('eyeBtn');
+        const eyeIcon = document.getElementById('eyeIcon');
+        const currencySelector = document.getElementById('currencySelector');
+        const favBtn = document.getElementById('favBtn');
+        const favMenu = document.getElementById('favMenu');
+        const payBtn = document.getElementById('payBtn');
+        const successLayer = document.getElementById('successLayer');
+        const amountField = document.getElementById('amountField');
+
+        let isHidden = true;
+
+        // 1. منطق العين (إظهار/إخفاء الرصيد) - تم تصحيح علامات التنصيص 
+        if (eyeBtn && currencySelector) {
+            eyeBtn.addEventListener('click', () => {
+                isHidden = !isHidden;
+                const options = currencySelector.options;
+                
+                for (let i = 0; i < options.length; i++) {
+                    const label = options[i].getAttribute('data-label');
+                    const val = options[i].getAttribute('data-val');
+                    
+                    // استخدام الـ Backticks  بدلاً من علامات التنصيص العادية لتفعيل ميزة المتغيرات
+                   options[i].text = isHidden ? `${label} | * `:` ${label} | ${val}`;
+                }
+                
+                eyeIcon.className = isHidden ? 'far fa-eye-slash text-danger' : 'far fa-eye text-danger';
+            });
+        }
+
+        // 2. منطق المفضلة
+        if (favBtn) {
+            favBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                favMenu.style.display = (favMenu.style.display === 'block') ? 'none' : 'block';
+            });
+        }
+
+        document.addEventListener('click', () => {
+            if (favMenu) favMenu.style.display = 'none';
+        });
+
+        // 3. تنفيذ العملية (زر استمرار)
+        if (payBtn) {
+            payBtn.addEventListener('click', function () {
+                if (!amountField.value || amountField.value <= 0) {
+                    alert("يرجى إدخال مبلغ صحيح");
+                    return;
+                }
+
+                this.innerHTML = '<span class="spinner-border spinner-border-sm"></span> جاري المعالجة...';
+                this.disabled = true;
+
+                setTimeout(() => {
+                    if (successLayer) successLayer.style.display = 'flex';
+                    setTimeout(() => {
+                        if (successLayer) successLayer.style.display = 'none';
+                        this.innerHTML = 'استمرار';
+                        this.disabled = false;
+                        amountField.value = "";
+                    }, 3000);
+                }, 1500);
+            });
+        }
+    });
+
+    // دالة تعبئة الرقم من المفضلة
+    function fillPhone(num) {
+        const phoneInput = document.getElementById('phoneInput');
+        if (phoneInput) phoneInput.value = num;
+    }
+</script>
+
+</body>
+</html>

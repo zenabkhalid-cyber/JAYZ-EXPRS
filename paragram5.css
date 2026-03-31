@@ -1,0 +1,183 @@
+/* الألوان والمتغيرات الأساسية */
+:root {
+    --main-red: #e61c23;
+    --dark-bg: #0c0c0c;
+    --card-bg: #1a1a1a;
+    --text-gray: #757575;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background-color: var(--dark-bg);
+    color: white;
+    padding-bottom: 120px;
+    overflow-x: hidden;
+    direction: rtl;
+}
+
+/* الرأس والتنبيهات */
+.app-header {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.alert-custom {
+    background-color: #1a0a0b;
+    color: var(--main-red);
+    padding: 12px;
+    margin: 0 15px 15px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* سلايدر البطاقات */
+.swiper {
+    
+    width: 100%;
+    padding-bottom: 30px;
+}
+
+.swiper-slide {
+    width: 320px;
+    height: 200px;
+}
+
+.wallet-card {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.bg-yer { background: linear-gradient(135deg, #e61c23 0%, #8b1114 100%); }
+.bg-sar { background: linear-gradient(135deg, #e61c23 0%, #8b1114 100%); }
+.bg-usd { background: linear-gradient(135deg,  #e61c23 0%, #8b1114 100%); }
+
+.amount-text {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* شبكة الأيقونات التسعة */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 15px;
+}
+
+.service-item {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    padding: 20px 5px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+    position: relative;
+}
+
+.service-item:active {
+    transform: scale(0.92);
+    border: 1px solid var(--main-red);
+}
+
+.service-item i {
+    font-size: 1.8rem;
+    color: var(--main-red);
+    display: block;
+    margin-bottom: 8px;
+}
+
+.service-item span {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.badge-new {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--main-red);
+    font-size: 0.6rem;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+/* القائمة السفلى والزر العائم */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #141414;
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 0;
+    border-top: 1px solid #222;
+    z-index: 2000;
+}
+
+.nav-link {
+    text-align: center;
+    color: var(--text-gray);
+    text-decoration: none;
+    flex: 1;
+}
+
+.nav-link.active {
+    color: var(--main-red);
+}
+
+.nav-link i {
+    font-size: 1.3rem;
+    display: block;
+}
+
+.floating-qr {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 65px;
+    height: 65px;
+    background: var(--main-red);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border: 5px solid var(--dark-bg);
+    box-shadow: 0 5px 15px rgba(230,28,35,0.4);
+    z-index: 2100;
+}
+/* التنسيق الافتراضي (أبيض) */
+.nav-link {
+    color: #ffffff; /* لون أبيض */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+/* التنسيق عند الضغط أو النشاط (أحمر) */
+.nav-link.active {
+    color: #ff4d4d !important; /* اللون الأحمر المشرق */
+}
+
+/* لضمان تغيير لون الأيقونة أيضاً إذا كانت من نوع Bootstrap Icons */
+.nav-link.active i {
+    color: #ff4d4d !important;
+}
+
+/* لضمان تغيير لون النص المصاحب */
+.nav-link.active span {
+    color: #ff4d4d !important;
+}

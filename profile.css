@@ -1,0 +1,27 @@
+ /* --- قسم التنسيق (CSS) المتكامل --- */
+        body { background-color: #000; color: #fff; font-family: sans-serif; }
+
+        /* الهيدر وبطاقة الحساب العلوي */
+        .profile-header .avatar-wrapper img { width: 90px; height: 90px; object-fit: cover; background-color: #1a1a1a; }
+        .account-card { background-color: #1a1a1a; border: 1px solid #282828; border-radius: 12px; padding: 12px 15px; }
+        .qr-box { background-color: #d62828; padding: 6px 10px; border-radius: 8px; }
+
+        /* القوائم المنسدلة والعناصر */
+        .menu-row { background-color: #1a1a1a; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 0.9rem; margin-bottom: 8px; }
+        .inner-content { background-color: #121212; margin: -5px 5px 10px 5px; padding: 15px; border-radius: 0 0 10px 10px; border: 1px solid #222; }
+        
+        /* الزر العائم */
+        .floating-qr { position: fixed; bottom: 35px; left: 50%; transform: translateX(-50%); z-index: 1001; text-decoration: none; }
+        .qr-circle { background-color: #d62828; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.6rem; border: 4px solid #000; }
+
+        /* الشريط السفلي */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: #0d0d0d; height: 70px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #222; z-index: 1000; }
+        .nav-item { color: #666; text-decoration: none; display: flex; flex-direction: column; align-items: center; font-size: 0.75rem; }
+        .nav-item.active { color: #ff4d4d; }
+
+        /* تخصيص المودال */
+        .modal-content { background-color: #1a1a1a; border: 1px solid #333; }
+        .fw{
+            color:#d62828 ;
+            text-decoration: none;
+        }

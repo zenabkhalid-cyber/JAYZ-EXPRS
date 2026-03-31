@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="الملف الشخصي - محفظة جيب">
+    <title>الملف الشخصي — محفظة جيب</title>
+    <link rel="stylesheet" href="css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/index.css">
+   <link rel="stylesheet" href="css/profile.css">
+</head>
+<body class="bg-black">
+
+<div class="container pt-4 pb-5 mb-5 animate-fade-up">
+
+    <!-- ── Avatar Section ── -->
+    <div class="text-center mb-4">
+        <div class="profile-avatar mb-3">
+            <span class="avatar-letter" id="profileAvatar">ز</span>
+            <div class="camera-btn">
+                <i class="bi bi-camera-fill text-white" style="font-size:0.75rem;"></i>
+            </div>
+        </div>
+        <h4 class="fw-bold mb-1" style="letter-spacing:-0.5px;" id="profileName">زينب خالد المحيا</h4>
+        <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+            <span class="verified-tag"><i class="bi bi-patch-check-fill"></i> موثّق</span>
+            <span style="font-size:0.72rem;color:var(--text-muted);">عميل ذهبي</span>
+        </div>
+        <!-- Level progress -->
+        <div style="max-width:180px;margin:0 auto;">
+            <div class="d-flex justify-content-between mb-1">
+                <small style="font-size:0.62rem;color:var(--text-muted);">ذهبي</small>
+                <small style="font-size:0.62rem;color:var(--text-muted);">بلاتيني ← 250 نقطة</small>
+            </div>
+            <div class="level-bar-wrap">
+                <div class="level-bar" id="levelBar" style="width:0%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Account Stats ── -->
+    <div class="profile-stats animate-fade-up" style="animation-delay:0.06s;">
+        <div class="stat-block">
+            <div class="stat-num text-danger">₪ 250K</div>
+            <div class="stat-lbl">الرصيد</div>
+        </div>
+        <div class="stat-block">
+            <div class="stat-num" style="color:#00d2ff;">47</div>
+            <div class="stat-lbl">عملياتي</div>
+        </div>
+        <div class="stat-block">
+            <div class="stat-num" style="color:#ffd200;">180</div>
+            <div class="stat-lbl">نقاط</div>
+        </div>
+    </div>
+
+    <!-- ── Account Info ── -->
+    <div class="info-strip d-flex align-items-center justify-content-center gap-4 mb-4 animate-fade-up" style="animation-delay:0.1s;">
+        <div class="text-center">
+            <small class="text-muted d-block mb-1" style="font-size:0.66rem;">رقم الهاتف</small>
+            <span class="fw-bold" style="font-size:0.92rem;" id="profilePhone">774080506</span>
+        </div>
+        <div class="info-div"></div>
+        <div class="text-center">
+            <small class="text-muted d-block mb-1" style="font-size:0.66rem;">تاريخ الانضمام</small>
+            <span class="fw-bold" style="font-size:0.92rem;" id="profileJoinDate">—</span>
+        </div>
+        <div class="info-div"></div>
+        <div style="background:var(--primary-gradient);width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 0.3s;box-shadow:0 4px 14px rgba(255,61,68,0.25);"
+             onclick="copyAccount()" title="نسخ / QR">
+            <i class="bi bi-qr-code text-white" style="font-size:1rem;" id="qrIcon"></i>
+        </div>
+    </div>
+
+    <!-- ── Menu ── -->
+    <div class="animate-fade-up" style="animation-delay:0.14s;">
+
+        <div class="section-lbl">الحساب</div>
+
+        <div class="menu-item-profile">
+            <div class="d-flex align-items-center gap-3">
+                <div class="menu-icon bg-soft-blue"><i class="bi bi-cloud-arrow-down" style="color:#3a7bd5;"></i></div>
+                <div>
+                    <span class="fw-medium" style="font-size:0.88rem;">تحديث بيانات التطبيق</span>
+                    <small class="d-block text-muted" style="font-size:0.68rem;">آخر تحديث: اليوم</small>
+                </div>
+            </div>
+            <i class="bi bi-chevron-left text-muted" style="font-size:0.78rem;"></i>
+        </div>
+
+        <div class="menu-item-profile">
+            <div class="d-flex align-items-center gap-3">
+                <div class="menu-icon bg-soft-red"><i class="bi bi-cpu" style="color:#ff3d44;"></i></div>
+                <div>
+                    <span class="fw-medium" style="font-size:0.88rem;">إدارة الأجهزة</span>
+                    <small class="d-block text-muted" style="font-size:0.68rem;">جهاز واحد مسجّل</small>
+                </div>
+            </div>
+            <i class="bi bi-chevron-left text-muted" style="font-size:0.78rem;"></i>
+        </div>
+
+        <!-- Client Profile (Expandable) -->
+        <div class="menu-item-profile" data-bs-toggle="collapse" data-bs-target="#clientCollapse" role="button">
+            <div class="d-flex align-items-center gap-3">
+                <div class="menu-icon bg-soft-gold"><i class="bi bi-person-badge" style="color:#ffc107;"></i></div>
+                <span class="fw-medium" style="font-size:0.88rem;">ملف العميل</span>
+            </div>
+            <i class="bi bi-chevron-down text-muted collapse-arrow" style="font-size:0.78rem;transition:transform 0.3s;"></i>
+        </div>
+        <div id="clientCollapse" class="collapse">
+            <div class="collapse-content">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="small text-muted">الاسم الكامل</span>
+                    <span class="small fw-bold" id="clientName">—</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="small text-muted">رقم الهاتف</span>
+                    <span class="small fw-bold" id="clientPhone">—</span>
+                </div>
+                <div class="d-flex justify-content-between mb-0">
+                    <span class="small text-muted">تاريخ الانضمام</span>
+                    <span class="small fw-bold" id="clientJoinDate">—</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-lbl mt-3">الأمان</div>
+
+        <!-- Security (Expandable) -->
+        <div class="menu-item-profile" data-bs-toggle="collapse" data-bs-target="#securityCollapse" role="button">
+            <div class="d-flex align-items-center gap-3">
+                <div class="menu-icon bg-soft-green"><i class="bi bi-shield-check" style="color:#20c997;"></i></div>
+                <div>
+                    <span class="fw-medium" style="font-size:0.88rem;">الخصوصية والأمان</span>
+                    <small class="d-block text-muted" style="font-size:0.68rem;">مستوى الأمان: عالٍ</small>
+                </div>
+            </div>
+            <i class="bi bi-chevron-down text-muted collapse-arrow" style="font-size:0.78rem;transition:transform 0.3s;"></i>
+        </div>
+        <div id="securityCollapse" class="collapse">
+            <div class="collapse-content">
+                <button class="menu-item-profile w-100 border-0 mb-2" onclick="openPasswordModal()" style="background:rgba(255,255,255,0.03);">
+                    <span class="fw-medium" style="font-size:0.83rem;">تغيير رمز PIN</span>
+                    <i class="bi bi-key text-muted"></i>
+                </button>
+                <div class="d-flex justify-content-between align-items-center px-1 py-2">
+                    <div>
+                        <span class="small fw-medium">بصمة الإصبع</span>
+                        <small class="d-block text-muted" style="font-size:0.65rem;">تسجيل الدخول بالبصمة</small>
+                    </div>
+                    <div class="form-check form-switch mb-0">
+                        <input class="form-check-input" type="checkbox" checked style="background-color:#ff3d44;border-color:#ff3d44;cursor:pointer;" id="biometricSwitch">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center px-1 py-2">
+                    <div>
+                        <span class="small fw-medium">إشعارات الدخول</span>
+                        <small class="d-block text-muted" style="font-size:0.65rem;">تنبيه عند تسجيل دخول جديد</small>
+                    </div>
+                    <div class="form-check form-switch mb-0">
+                        <input class="form-check-input" type="checkbox" checked style="background-color:#ff3d44;border-color:#ff3d44;cursor:pointer;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-lbl mt-3">أخرى</div>
+
+        <a href="notifications.html" class="menu-item-profile">
+            <div class="d-flex align-items-center gap-3">
+                <div class="menu-icon" style="background:rgba(102,126,234,0.12);"><i class="bi bi-bell" style="color:#667eea;"></i></div>
+                <span class="fw-medium" style="font-size:0.88rem;">الإشعارات</span>
+            </div>
+            <i class="bi bi-chevron-left text-muted" style="font-size:0.78rem;"></i>
+        </a>
+
+        <div class="menu-item-profile">
+            <div class="d-flex align-items-center gap-3">
+                <div class="menu-icon bg-soft-gold"><i class="bi bi-question-circle" style="color:#ffc107;"></i></div>
+                <div>
+                    <span class="fw-medium" style="font-size:0.88rem;">الدعم والمساعدة</span>
+                    <small class="d-block text-muted" style="font-size:0.68rem;">متاح 24/7</small>
+                </div>
+            </div>
+            <i class="bi bi-chevron-left text-muted" style="font-size:0.78rem;"></i>
+        </div>
+
+        <!-- Logout -->
+        <button id="logoutBtn" class="menu-item-profile logout-btn w-100 mt-4 text-danger border-0">
+            <div class="d-flex align-items-center gap-3">
+                <div class="menu-icon" style="background:rgba(255,61,68,0.1);"><i class="bi bi-box-arrow-right text-danger"></i></div>
+                <span class="fw-bold" style="font-size:0.88rem;">تسجيل الخروج</span>
+            </div>
+            <i class="bi bi-chevron-left text-danger" style="font-size:0.78rem;"></i>
+        </button>
+
+        <p class="text-center text-muted mt-4 mb-5" style="font-size:0.58rem;letter-spacing:1.5px;opacity:0.35;">VERSION 0.4.2.7 — محفظة جيب</p>
+    </div>
+</div>
+
+<!-- PIN Modal -->
+<div class="modal fade" id="passwordModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered mx-4">
+        <div class="modal-content border-0 shadow-lg" style="background:rgba(15,15,20,0.97);backdrop-filter:blur(30px);border-radius:28px;border:1px solid rgba(255,255,255,0.07);">
+            <div class="modal-body p-4 text-center">
+                <div class="mx-auto mb-4" style="width:60px;height:60px;border-radius:18px;background:rgba(58,123,213,0.1);display:flex;align-items:center;justify-content:center;">
+                    <i class="bi bi-shield-lock-fill fs-4" style="color:#3a7bd5;"></i>
+                </div>
+                <h6 class="mb-1 fw-bold">تغيير رمز الدخول (PIN)</h6>
+                <p class="text-muted small mb-4" style="font-size:0.75rem;">أدخل رمزك الحالي ثم الرمز الجديد</p>
+                <div class="mb-3 text-start">
+                    <label class="small text-muted mb-1">الرمز الحالي</label>
+                    <input type="password" class="form-control text-white text-center py-3" placeholder="• • • • • •" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;">
+                </div>
+                <div class="mb-4 text-start">
+                    <label class="small text-muted mb-1">الرمز الجديد</label>
+                    <input type="password" class="form-control text-white text-center py-3" placeholder="• • • • • •" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;">
+                </div>
+                <button class="btn w-100 py-3 fw-bold shadow-sm text-white mb-2" style="background:var(--primary-gradient);border-radius:16px;box-shadow:0 6px 20px rgba(255,61,68,0.25);" onclick="alert('تم الحفظ بنجاح ✓')">حفظ التغييرات</button>
+                <button class="btn btn-link text-muted w-100 text-decoration-none small" data-bs-dismiss="modal">إلغاء</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav-modern glass-nav">
+    <a href="paragram5.html" class="nav-item-modern">
+        <i class="bi bi-house-door-fill fs-4 mb-1"></i>
+        <span>الرئيسية</span>
+    </a>
+    <a href="services.html" class="nav-item-modern">
+        <i class="bi bi-grid-fill fs-4 mb-1"></i>
+        <span>الخدمات</span>
+    </a>
+    <div style="width: 70px;"></div>
+    <a href="history.html" class="nav-item-modern">
+        <i class="bi bi-clock-history fs-4 mb-1"></i>
+        <span>العمليات</span>
+    </a>
+    <a href="profile.html" class="nav-item-modern active">
+        <i class="bi bi-person-fill fs-4 mb-1"></i>
+        <span>الملف</span>
+    </a>
+</nav>
+
+<a href="scan.html" class="fab-qr" title="Scan QR Code">
+    <i class="bi bi-qr-code-scan"></i>
+</a>
+
+<script src="js/bootstrap.bundle.min.js"></script>
+<script>
+    function openPasswordModal() {
+        new bootstrap.Modal(document.getElementById('passwordModal')).show();
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        if (confirm('هل تريد تسجيل الخروج؟')) {
+            // مسح بيانات الجلسة فقط (وليس حسابات المستخدمين)
+            sessionStorage.removeItem('loggedInUser');
+            window.location.href = 'paragram1.html';
+        }
+    });
+
+    // Collapse arrow rotation
+    document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(btn => {
+        const target = document.querySelector(btn.getAttribute('data-bs-target'));
+        btn.addEventListener('click', function() {
+            const arrow = this.querySelector('.collapse-arrow');
+            if (arrow) {
+                const opening = !target.classList.contains('show');
+                arrow.style.transform = opening ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
+        });
+    });
+
+    // Copy account number feedback
+    function copyAccount() {
+        const phone = document.getElementById('profilePhone')?.textContent || '';
+        navigator.clipboard && navigator.clipboard.writeText(phone);
+        const icon = document.getElementById('qrIcon');
+        icon.className = 'bi bi-check2 text-white';
+        setTimeout(() => icon.className = 'bi bi-qr-code text-white', 1500);
+    }
+    document.querySelector('.info-strip [onclick="copyAccount()"]')?.addEventListener('click', copyAccount);
+
+    // Animate level bar on load
+    setTimeout(() => {
+        document.getElementById('levelBar').style.width = '72%';
+    }, 400);
+
+    // ── تحميل بيانات المستخدم المسجّل ──
+    (function loadUserProfile() {
+        const loggedIn = JSON.parse(sessionStorage.getItem('loggedInUser'));
+        if (!loggedIn) return;
+
+        // الاسم والأفاتار
+        document.getElementById('profileName').textContent = loggedIn.name;
+        document.getElementById('profileAvatar').textContent = loggedIn.name.charAt(0);
+
+        // رقم الهاتف
+        document.getElementById('profilePhone').textContent = loggedIn.phone;
+
+        // بيانات ملف العميل المنسدل
+        document.getElementById('clientName').textContent = loggedIn.name;
+        document.getElementById('clientPhone').textContent = loggedIn.phone;
+
+        // البحث عن بيانات المستخدم الكاملة من localStorage
+        const users = JSON.parse(localStorage.getItem('wallet_users') || '[]');
+        const fullUser = users.find(u => u.phone === loggedIn.phone);
+
+        if (fullUser && fullUser.createdAt) {
+            const date = new Date(fullUser.createdAt);
+            const dateStr = date.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('profileJoinDate').textContent = dateStr;
+            document.getElementById('clientJoinDate').textContent = dateStr;
+        }
+    })();
+</script>
+</body>
+</html>

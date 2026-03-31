@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - ZY</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/paragram1.css">
+</head>
+<body>
+    <div class="mobile-container">
+        <div class="text-start w-100 animate-up"><a href="index.html" class="back-link">✕</a></div>
+        <div class="header animate-up">
+            <h2 class="main-title mt-4">تسجيل الدخول</h2>
+            <p class="sub-text">مرحباً بك مجدداً في JAYZ</p>
+        </div>
+
+        <div class="form-section animate-up delay-1 w-100 text-end">
+            <div class="input-group-custom">
+                <label>رقم الهاتف</label>
+                <input type="tel" id="phone" placeholder="7xxxxxxxx" dir="ltr">
+                <small id="phoneError" class="text-danger d-none">رقم الهاتف يجب أن يبدأ بـ 7 ويتكون من 9 أرقام</small>
+            </div>
+            <div class="input-group-custom mt-4">
+                <label>كلمة المرور</label>
+                <input type="password" id="password" placeholder="••••••••">
+                <small id="passError" class="text-danger d-none">كلمة المرور يجب أن تكون 6 خانات على الأقل</small>
+                
+            <p class="sub-text mt-3"><a href="forgot_password.html" class="brand-red">نسيت كلمة المرور؟</a></p>
+            </div>
+        </div>
+        <small id="loginError" class="text-danger d-none d-block text-end mt-2 px-1" style="font-size:0.85rem;"></small>
+
+        <div class="action-footer animate-up delay-2 w-100">
+            <button id="loginBtn" class="btn-main-red d-block text-decoration-none w-100 border-0">تسجيل الدخول</button>
+            <p class="sub-text mt-3">ليس لديك حساب؟ <a href="paragram2.html" class="brand-red">أنشئ حساباً الآن</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const phoneRegex = /^7[0-9]{8}$/;
+            let valid = true;
+
+            // إخفاء أي رسائل خطأ سابقة
+            document.getElementById('phoneError').classList.add('d-none');
+            document.getElementById('passError').classList.add('d-none');
+            document.getElementById('loginError').classList.add('d-none');
+
+            if(!phoneRegex.test(phone)) {
+                document.getElementById('phoneError').classList.remove('d-none');
+                valid = false;
+            }
+
+            if(password.length < 6) {
+                document.getElementById('passError').classList.remove('d-none');
+                valid = false;
+            }
+
+            if(!valid) {
+                this.classList.add('shake-animation');
+                setTimeout(() => this.classList.remove('shake-animation'), 500);
+                return;
+            }
+
+            // التحقق من بيانات المستخدم المسجل
+            const users = JSON.parse(localStorage.getItem('wallet_users') || '[]');
+            const user = users.find(u => u.phone === phone);
+
+            if(!user) {
+                document.getElementById('loginError').textContent = 'هذا الرقم غير مسجل، يرجى إنشاء حساب أولاً';
+                document.getElementById('loginError').classList.remove('d-none');
+                this.classList.add('shake-animation');
+                setTimeout(() => this.classList.remove('shake-animation'), 500);
+                return;
+            }
+
+            if(user.password !== password) {
+                document.getElementById('loginError').textContent = 'كلمة المرور غير صحيحة';
+                document.getElementById('loginError').classList.remove('d-none');
+                this.classList.add('shake-animation');
+                setTimeout(() => this.classList.remove('shake-animation'), 500);
+                return;
+            }
+
+            // تسجيل دخول ناجح - حفظ بيانات المستخدم النشط
+            sessionStorage.setItem('loggedInUser', JSON.stringify({
+                id: user.id,
+                name: user.name,
+                phone: user.phone
+            }));
+
+            window.location.href = 'paragram5.html'; 
+        });
+    </script>
+</body>
+</html>

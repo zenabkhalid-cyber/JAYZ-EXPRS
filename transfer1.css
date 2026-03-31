@@ -1,0 +1,262 @@
+/* ══════════════════════════════════════
+   JAIB WALLET — Transfer Form Styles
+   ══════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap');
+
+body {
+    background-color: #050508;
+    color: #f0f0f5;
+    font-family: 'Cairo', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    direction: rtl;
+    -webkit-font-smoothing: antialiased;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 24px 20px;
+}
+
+/* ── Icon Box ── */
+.icon-box {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ff3d44;
+    width: 62px;
+    height: 62px;
+    border-radius: 18px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+    font-size: 1.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.3s;
+}
+
+/* ── Floating Label ── */
+.input-label {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-right: 14px;
+    display: block;
+    margin-bottom: -8px;
+    position: relative;
+    z-index: 2;
+    background: #050508;
+    width: fit-content;
+    padding: 0 6px;
+    font-weight: 500;
+}
+
+/* ── Input Groups ── */
+.custom-group {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 8px;
+    align-items: center;
+    background: transparent;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.custom-group:focus-within {
+    border-color: rgba(255, 61, 68, 0.3);
+    box-shadow: 0 0 0 3px rgba(255, 61, 68, 0.08);
+}
+
+.form-control, .form-select {
+    background-color: transparent !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    box-shadow: none !important;
+    text-align: right;
+    font-family: 'Cairo', sans-serif;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.form-select option {
+    background: #0d0d12;
+    color: white;
+}
+
+/* ── Side Buttons ── */
+.square-btn {
+    border-radius: 14px;
+    height: 52px;
+    width: 55px;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.04);
+    color: #ff3d44;
+    cursor: pointer;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+}
+
+.square-btn:hover {
+    background: rgba(255, 61, 68, 0.08);
+    border-color: rgba(255, 61, 68, 0.2) !important;
+}
+
+/* ── Favorites Dropdown ── */
+.fav-dropdown {
+    display: none;
+    position: absolute;
+    top: 58px;
+    right: 0;
+    background: rgba(13, 13, 18, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 200px;
+    z-index: 1000;
+    border-radius: 16px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+}
+
+.fav-dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.fav-dropdown li {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    text-align: right;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+}
+
+.fav-dropdown li:hover {
+    background: rgba(255, 61, 68, 0.08);
+    color: #ff3d44;
+}
+
+.fav-dropdown li:last-child {
+    border-bottom: none;
+}
+
+/* ── Submit Button ── */
+.btn-submit {
+    background: linear-gradient(135deg, #ff3d44, #e61c23);
+    color: white;
+    padding: 16px;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 1rem;
+    border: none;
+    width: 100%;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(255, 61, 68, 0.25);
+    font-family: 'Cairo', sans-serif;
+    letter-spacing: 0.3px;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 61, 68, 0.35);
+}
+
+.btn-submit:active {
+    transform: scale(0.98);
+}
+
+.btn-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* ── Success Overlay ── */
+.success-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 5, 8, 0.92);
+    backdrop-filter: blur(10px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.check-circle {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #ff3d44, #e61c23);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 45px;
+    color: white;
+    animation: scaleUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 0 30px rgba(255, 61, 68, 0.4);
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ── Circular Icon Box ── */
+.icon-box-circle {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ff3d44;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 1.3rem;
+}
+
+/* ── Currency Select Options ── */
+#currencySelect option {
+    background-color: #0d0d12;
+    color: white;
+    padding: 10px;
+}
+
+/* ── Animations ── */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.app-container > * {
+    animation: fadeInUp 0.4s ease-out both;
+}
+.app-container > *:nth-child(1) { animation-delay: 0s; }
+.app-container > *:nth-child(2) { animation-delay: 0.05s; }
+.app-container > *:nth-child(3) { animation-delay: 0.10s; }
+.app-container > *:nth-child(4) { animation-delay: 0.15s; }
+.app-container > *:nth-child(5) { animation-delay: 0.20s; }
+.app-container > *:nth-child(6) { animation-delay: 0.25s; }
+.app-container > *:nth-child(7) { animation-delay: 0.30s; }
+.app-container > *:nth-child(8) { animation-delay: 0.35s; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
+::selection { background: rgba(255, 61, 68, 0.3); color: white; }

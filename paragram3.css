@@ -1,0 +1,56 @@
+/* هذا الكود سيجعل الصفحة سوداء والعناصر في المنتصف */
+body {
+    background-color: #0d0d0d !important; /* خلفية سوداء مثل جيب */
+    color: white;
+    font-family: 'Cairo', sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.mobile-wrapper {
+    width: 100%;
+    max-width: 400px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.otp-box {
+    width: 65px;
+    height: 75px;
+    background-color: #1a1a1a; /* لون المربعات في صورة جيب */
+    border: 2px solid #333;
+    border-radius: 15px;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    outline: none;
+}
+
+.otp-box:focus {
+    border-color: #e61e25;
+    box-shadow: 0 0 10px rgba(230, 30, 37, 0.4);
+}
+
+.btn-red-main {
+    background-color: #e61e25;
+    color: white;
+    border: none;
+    padding: 18px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.sub-text { color: #888; font-size: 0.9rem; }
+.brand-red { color: #e61e25; }
+.close-btn { color: white; font-size: 1.5rem; opacity: 0.7; }
+.img{
+    max-width: 110px; 
+}

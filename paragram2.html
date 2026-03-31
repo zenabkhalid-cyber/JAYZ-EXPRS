@@ -1,0 +1,119 @@
+ <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب جديد - ZY</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/paragram2.css">
+</head>
+<body>
+
+    <div class="mobile-container animate-up">
+        <div class="top-bar text-start w-100">
+            <a href="paragram.html" class="close-btn text-decoration-none"><img class="img" src="1771532543548.png" alt=""></a>
+        </div>
+
+        <div class="header text-center">
+            <h2 class="main-title mt-2">حساب جديد</h2>
+            <p class="sub-text">انضم إلى AJYZ وابدأ رحلتك المالية</p>     
+        </div>
+
+        <div class="form-content w-100 text-end mt-4">
+            
+            <div class="custom-field mb-4">
+                <label>الاسم الكامل</label>
+                <div class="input-with-icon">
+                    <input type="text" id="fullName" placeholder="أدخل اسمك الثلاثي">
+                    <span class="field-icon">👤</span>
+                </div>   
+            </div>
+
+            <div class="custom-field mb-4">
+                <label>رقم الهاتف</label>
+                <div class="input-with-icon">
+                    <input type="tel" id="phone" placeholder="7xxxxxxxx" dir="ltr">
+                    <span class="field-icon">📞</span>
+                </div>
+            </div>
+
+            <div class="custom-field mb-4">
+                <label>كلمة المرور</label>
+                <div class="input-with-icon">
+                    <input type="password" id="password" placeholder="••••••••">
+                    <span class="field-icon">🔒</span>
+                </div>
+            </div>
+
+          <div class="terms-check d-flex align-items-center mb-4">
+    <input type="checkbox" id="terms" onclick="window.location.href='paragram4.html';">
+    <label for="terms" class="ms-2">أوافق على الشروط والأحكام</label>
+</div>
+        </div>
+
+        <div class="footer-actions w-100">
+            <button id="signupBtn" class="btn-primary-red w-100">إنشاء الحساب</button>
+            <p class="sub-text text-center mt-3">
+                لديك حساب بالفعل؟ <a href="paragram1.html" class="accent-link">سجل دخولك</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+       document.getElementById('signupBtn').addEventListener('click', function() {
+    const name = document.getElementById('fullName').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const password = document.getElementById('password').value;
+    const terms = document.getElementById('terms').checked;
+    const phoneRegex = /^7[0-9]{8}$/;
+    
+    // التحقق من أن البيانات ليست فارغة والموافقة على الشروط
+    if(name === "" || phone === "" || password === "" || !terms) {
+        alert("يرجى إكمال جميع البيانات والموافقة على الشروط");
+        this.classList.add('shake');
+        setTimeout(() => this.classList.remove('shake'), 500);
+        return;
+    }
+
+    if(!phoneRegex.test(phone)) {
+        alert("رقم الهاتف يجب أن يبدأ بـ 7 ويتكون من 9 أرقام");
+        this.classList.add('shake');
+        setTimeout(() => this.classList.remove('shake'), 500);
+        return;
+    }
+
+    if(password.length < 6) {
+        alert("كلمة المرور يجب أن تكون 6 خانات على الأقل");
+        this.classList.add('shake');
+        setTimeout(() => this.classList.remove('shake'), 500);
+        return;
+    }
+
+    // التحقق من أن الرقم غير مسجل مسبقاً
+    const existingUsers = JSON.parse(localStorage.getItem('wallet_users') || '[]');
+    if(existingUsers.find(u => u.phone === phone)) {
+        alert("هذا الرقم مسجل مسبقاً! يرجى تسجيل الدخول");
+        return;
+    }
+
+    // توليد رمز تحقق عشوائي لمحاكات الإرسال
+    const generatedOtp = Math.floor(1000 + Math.random() * 9000);
+    
+    // إظهار تنبيه يحاكي وصول رسالة نصية (SMS)
+    alert("تم إرسال رمز التحقق " + generatedOtp + " إلى رقمك: " + phone);
+    
+    // حفظ الرمز وبيانات المستخدم المؤقتة في sessionStorage
+    sessionStorage.setItem('otpCode', generatedOtp.toString());
+    sessionStorage.setItem('pendingUser', JSON.stringify({
+        name: name,
+        phone: phone,
+        password: password
+    }));
+    
+    // الانتقال إلى صفحة التحقق
+    window.location.href = "paragram3.html"; 
+});
+    </script>
+</body>
+</html>    

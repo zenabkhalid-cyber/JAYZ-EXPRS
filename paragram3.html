@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التحقق من الرمز - ZY</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/paragram3.css">
+</head>
+<body>
+
+    <div class="mobile-wrapper animate-up">
+        <div class="top-bar text-start w-100">
+            <a href="paragram.html" class="close-btn text-decoration-none"><img class="img" src="1771532543548.png" alt=""></a>
+        </div>
+
+        <div class="content-center">
+            <div class="header text-center">
+                <h2 class="main-title mt-4">رمز التحقق</h2>
+                <p class="sub-text">أدخل الرمز المكون من 4 أرقام المرسل إلى <br> 
+                   <span class="text-white fw-bold" dir="ltr">+967 7xxxxxxxx</span>
+                </p>
+            </div>
+
+            <div class="otp-container d-flex justify-content-center gap-3 mt-5" dir="ltr">
+                <input type="text" class="otp-box" maxlength="1" id="otp1" oninput="moveNext(this, 'otp2')">
+                <input type="text" class="otp-box" maxlength="1" id="otp2" oninput="moveNext(this, 'otp3')">
+                <input type="text" class="otp-box" maxlength="1" id="otp3" oninput="moveNext(this, 'otp4')">
+                <input type="text" class="otp-box" maxlength="1" id="otp4">
+            </div>
+
+            <div class="resend-box text-center mt-5">
+                <p class="sub-text">لم يصلك الرمز؟ <br> 
+                   <a href="#" class="brand-red text-decoration-none fw-bold">إعادة إرسال الرمز</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-action mb-4">
+            <button class="btn-red-main w-100">تأكيد الرمز</button>
+        </div>
+    </div>
+
+    <script>
+        function moveNext(current, nextId) {
+            if (current.value.length >= 1) {
+                document.getElementById(nextId).focus();
+            }
+        }
+        document.querySelector('.btn-red-main').addEventListener('click', function() {
+    // تجميع الأرقام من المربعات الأربعة
+    const enteredCode = document.getElementById('otp1').value + 
+                        document.getElementById('otp2').value + 
+                        document.getElementById('otp3').value + 
+                        document.getElementById('otp4').value;
+    
+    const sentCode = sessionStorage.getItem('otpCode');
+
+    if (enteredCode === sentCode) {
+        // استرجاع بيانات المستخدم المعلق من sessionStorage
+        const pendingUser = JSON.parse(sessionStorage.getItem('pendingUser'));
+        
+        if(pendingUser) {
+            // حفظ المستخدم بشكل دائم في localStorage
+            const users = JSON.parse(localStorage.getItem('wallet_users') || '[]');
+            users.push({
+                id: Date.now(),
+                name: pendingUser.name,
+                phone: pendingUser.phone,
+                password: pendingUser.password,
+                createdAt: new Date().toISOString(),
+                balance: 0,
+                status: 'نشط'
+            });
+            localStorage.setItem('wallet_users', JSON.stringify(users));
+            
+            // تنظيف البيانات المؤقتة
+            sessionStorage.removeItem('pendingUser');
+            sessionStorage.removeItem('otpCode');
+        }
+        
+        alert("تم إنشاء حسابك بنجاح! يرجى تسجيل الدخول");
+        window.location.href = "paragram1.html"; // الانتقال لصفحة تسجيل الدخول
+    } else {
+        alert("رمز التحقق غير صحيح، يرجى المحاولة مرة أخرى");
+    }
+});
+    </script>
+</body>
+</html>

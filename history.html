@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="العمليات الأخيرة - محفظة جيب">
+    <title>العمليات الأخيرة — محفظة جيب</title>
+    <link rel="stylesheet" href="css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/index.css">
+   
+</head>
+<body class="bg-black">
+
+<div class="container pt-3 pb-5 mb-5 animate-fade-up">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="paragram5.html" class="glass-card rounded-circle text-white d-flex align-items-center justify-content-center" style="width:42px;height:42px;padding:0 !important;" title="رجوع">
+            <i class="bi bi-chevron-right"></i>
+        </a>
+        <h5 class="fw-bold m-0" style="letter-spacing:-0.3px;">العمليات الأخيرة</h5>
+        <button class="glass-card rounded-circle text-white d-flex align-items-center justify-content-center border-0" style="width:42px;height:42px;padding:0 !important;" onclick="toggleSearch()" title="بحث">
+            <i class="bi bi-search" id="searchToggleIcon" style="font-size:0.95rem;"></i>
+        </button>
+    </div>
+
+    <!-- Search (hidden by default) -->
+    <div id="searchWrap" class="position-relative mb-3" style="display:none;">
+        <i class="bi bi-search position-absolute" style="right:14px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.25);"></i>
+        <input type="text" id="txSearch" class="tx-search" placeholder="ابحث في العمليات..." oninput="filterSearch(this.value)">
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-strip animate-fade-up" style="animation-delay:0.06s;">
+        <div class="sum-card">
+            <div class="sum-value text-danger">-93,000</div>
+            <div class="sum-label">إجمالي الصرف</div>
+        </div>
+        <div class="sum-card">
+            <div class="sum-value text-success">+100,000</div>
+            <div class="sum-label">إجمالي الوارد</div>
+        </div>
+        <div class="sum-card">
+            <div class="sum-value" style="color:#00d2ff;">5</div>
+            <div class="sum-label">عدد العمليات</div>
+        </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="d-flex gap-2 mb-4 overflow-auto pb-1 animate-fade-up" style="animation-delay:0.1s;scrollbar-width:none;">
+        <button class="filter-tab active" data-filter="all" onclick="filterTabs(this)">الكل</button>
+        <button class="filter-tab" data-filter="send" onclick="filterTabs(this)">تحويلات</button>
+        <button class="filter-tab" data-filter="receive" onclick="filterTabs(this)">استلام</button>
+        <button class="filter-tab" data-filter="withdraw" onclick="filterTabs(this)">سحب</button>
+        <button class="filter-tab" data-filter="recharge" onclick="filterTabs(this)">شحن</button>
+        <button class="filter-tab" data-filter="bill" onclick="filterTabs(this)">فواتير</button>
+    </div>
+
+    <!-- Transactions -->
+    <div class="history-list animate-fade-up" id="historyList" style="animation-delay:0.14s;">
+
+        <div class="date-separator" data-group="today">اليوم</div>
+
+        <div class="history-card" data-type="withdraw" data-name="سحب نقدي"
+             onclick="openSheet('سحب نقدي — صراف آلي','50,000 ر.ي','text-danger','bi-cash-coin','bg-info-subtle text-info','اليوم، 10:30 ص','سحب','صراف آلي YKB','مكتمل','-')">
+            <div class="d-flex align-items-center gap-3">
+                <div class="history-icon" style="background:rgba(13,202,240,0.1);">
+                    <i class="bi bi-cash-coin text-info"></i>
+                </div>
+                <div>
+                    <h6 class="mb-0 fw-bold" style="font-size:0.85rem;">سحب نقدي — صراف آلي</h6>
+                    <div class="d-flex align-items-center gap-2 mt-1">
+                        <small class="text-muted" style="font-size:0.68rem;">10:30 ص</small>
+                        <span class="status-dot bg-success"></span>
+                        <small style="font-size:0.65rem;color:#38ef7d;">مكتمل</small>
+                    </div>
+                </div>
+            </div>
+            <div class="text-end">
+                <div class="text-danger fw-bold" style="font-size:0.88rem;">- 50,000</div>
+                <small class="text-muted" style="font-size:0.65rem;">ر.ي</small>
+            </div>
+        </div>
+
+        <div class="date-separator mt-2" data-group="yesterday">أمس</div>
+
+        <div class="history-card" data-type="recharge" data-name="شحن باقة 4G"
+             onclick="openSheet('شحن باقة 4G','4,500 ر.ي','text-danger','bi-phone','bg-success-subtle text-success','أمس، 08:15 م','شحن رصيد','يمن فورجي','مكتمل','-')">
+            <div class="d-flex align-items-center gap-3">
+                <div class="history-icon" style="background:rgba(25,135,84,0.12);">
+                    <i class="bi bi-phone text-success"></i>
+                </div>
+                <div>
+                    <h6 class="mb-0 fw-bold" style="font-size:0.85rem;">شحن باقة 4G</h6>
+                    <div class="d-flex align-items-center gap-2 mt-1">
+                        <small class="text-muted" style="font-size:0.68rem;">08:15 م</small>
+                        <span class="status-dot bg-success"></span>
+                        <small style="font-size:0.65rem;color:#38ef7d;">مكتمل</small>
+                    </div>
+                </div>
+            </div>
+            <div class="text-end">
+                <div class="text-danger fw-bold" style="font-size:0.88rem;">- 4,500</div>
+                <small class="text-muted" style="font-size:0.65rem;">ر.ي</small>
+            </div>
+        </div>
+
+        <div class="date-separator mt-2" data-group="20feb">20 فبراير 2026</div>
+
+        <div class="history-card" data-type="receive" data-name="استلام حوالة من محمد"
+             onclick="openSheet('استلام حوالة من محمد','100,000 ر.ي','text-success','bi-arrow-down-left','bg-primary-subtle text-primary','20 فبراير، 02:00 م','استلام','محلي','مكتمل','+')">
+            <div class="d-flex align-items-center gap-3">
+                <div class="history-icon" style="background:rgba(13,110,253,0.1);">
+                    <i class="bi bi-arrow-down-left text-primary"></i>
+                </div>
+                <div>
+                    <h6 class="mb-0 fw-bold" style="font-size:0.85rem;">استلام حوالة من محمد</h6>
+                    <div class="d-flex align-items-center gap-2 mt-1">
+                        <small class="text-muted" style="font-size:0.68rem;">02:00 م</small>
+                        <span class="status-dot bg-success"></span>
+                        <small style="font-size:0.65rem;color:#38ef7d;">مكتمل</small>
+                    </div>
+                </div>
+            </div>
+            <div class="text-end">
+                <div class="text-success fw-bold" style="font-size:0.88rem;">+ 100,000</div>
+                <small class="text-muted" style="font-size:0.65rem;">ر.ي</small>
+            </div>
+        </div>
+
+        <div class="date-separator mt-2" data-group="19feb">19 فبراير 2026</div>
+
+        <div class="history-card" data-type="send" data-name="تحويل لـ أحمد علي"
+             onclick="openSheet('تحويل لـ أحمد علي','30,000 ر.ي','text-danger','bi-send','bg-warning-subtle text-warning','19 فبراير، 04:45 م','تحويل','محلي','مكتمل','-')">
+            <div class="d-flex align-items-center gap-3">
+                <div class="history-icon" style="background:rgba(255,193,7,0.1);">
+                    <i class="bi bi-send text-warning"></i>
+                </div>
+                <div>
+                    <h6 class="mb-0 fw-bold" style="font-size:0.85rem;">تحويل لـ أحمد علي</h6>
+                    <div class="d-flex align-items-center gap-2 mt-1">
+                        <small class="text-muted" style="font-size:0.68rem;">04:45 م</small>
+                        <span class="status-dot bg-success"></span>
+                        <small style="font-size:0.65rem;color:#38ef7d;">مكتمل</small>
+                    </div>
+                </div>
+            </div>
+            <div class="text-end">
+                <div class="text-danger fw-bold" style="font-size:0.88rem;">- 30,000</div>
+                <small class="text-muted" style="font-size:0.65rem;">ر.ي</small>
+            </div>
+        </div>
+
+        <div class="history-card" data-type="bill" data-name="سداد فاتورة كهرباء"
+             onclick="openSheet('سداد فاتورة كهرباء','8,500 ر.ي','text-danger','bi-lightning-charge-fill','bg-danger-subtle text-danger','19 فبراير، 01:20 م','فاتورة','شركة الكهرباء','مكتمل','-')">
+            <div class="d-flex align-items-center gap-3">
+                <div class="history-icon" style="background:rgba(220,53,69,0.1);">
+                    <i class="bi bi-receipt text-danger"></i>
+                </div>
+                <div>
+                    <h6 class="mb-0 fw-bold" style="font-size:0.85rem;">سداد فاتورة كهرباء</h6>
+                    <div class="d-flex align-items-center gap-2 mt-1">
+                        <small class="text-muted" style="font-size:0.68rem;">01:20 م</small>
+                        <span class="status-dot bg-success"></span>
+                        <small style="font-size:0.65rem;color:#38ef7d;">مكتمل</small>
+                    </div>
+                </div>
+            </div>
+            <div class="text-end">
+                <div class="text-danger fw-bold" style="font-size:0.88rem;">- 8,500</div>
+                <small class="text-muted" style="font-size:0.65rem;">ر.ي</small>
+            </div>
+        </div>
+
+        <!-- Empty state (shown when search has no results) -->
+        <div id="emptyState" class="empty-state d-none">
+            <i class="bi bi-search"></i>
+            <p class="text-muted small">لا توجد نتائج مطابقة</p>
+        </div>
+
+    </div>
+</div>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav-modern glass-nav">
+    <a href="paragram5.html" class="nav-item-modern">
+        <i class="bi bi-house-door-fill fs-4 mb-1"></i><span>الرئيسية</span>
+    </a>
+    <a href="services.html" class="nav-item-modern">
+        <i class="bi bi-grid-fill fs-4 mb-1"></i><span>الخدمات</span>
+    </a>
+    <div style="width: 70px;"></div>
+    <a href="history.html" class="nav-item-modern active">
+        <i class="bi bi-clock-history fs-4 mb-1"></i><span>العمليات</span>
+    </a>
+    <a href="profile.html" class="nav-item-modern">
+        <i class="bi bi-person-fill fs-4 mb-1"></i><span>الملف</span>
+    </a>
+</nav>
+<a href="scan.html" class="fab-qr" title="QR"><i class="bi bi-qr-code-scan"></i></a>
+
+<!-- Detail Sheet -->
+<div class="detail-sheet" id="detailSheet">
+    <div class="sheet-backdrop" onclick="closeSheet()"></div>
+    <div class="sheet-inner">
+        <div class="sheet-handle"></div>
+        <div class="text-center mb-4">
+            <div id="dIcon" class="mx-auto mb-3 rounded-circle d-flex align-items-center justify-content-center" style="width:60px;height:60px;font-size:1.4rem;"></div>
+            <p class="mb-1" style="color:var(--text-muted);font-size:0.78rem;" id="dTitle"></p>
+            <div id="dAmount" style="font-size:2rem;font-weight:800;letter-spacing:-1.5px;"></div>
+        </div>
+        <div id="dRows"></div>
+        <div class="d-grid gap-2 mt-4">
+            <button class="btn py-2 fw-bold text-white" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:16px;" onclick="closeSheet()">إغلاق</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentFilter = 'all';
+
+function filterTabs(el) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    currentFilter = el.dataset.filter;
+    applyFilters();
+}
+
+function toggleSearch() {
+    const w = document.getElementById('searchWrap');
+    const shown = w.style.display !== 'none';
+    w.style.display = shown ? 'none' : 'block';
+    if (!shown) document.getElementById('txSearch').focus();
+    else { document.getElementById('txSearch').value = ''; filterSearch(''); }
+}
+
+function filterSearch(q) {
+    applyFilters(q.toLowerCase());
+}
+
+function applyFilters(query = '') {
+    const cards   = document.querySelectorAll('.history-card');
+    const seps    = document.querySelectorAll('.date-separator');
+    let visible   = 0;
+
+    // Reset separators
+    seps.forEach(s => s.style.display = 'flex');
+
+    cards.forEach(card => {
+        const typeMatch = currentFilter === 'all' || card.dataset.type === currentFilter;
+        const nameMatch = card.dataset.name.toLowerCase().includes(query);
+        card.style.display = (typeMatch && nameMatch) ? 'flex' : 'none';
+        if (typeMatch && nameMatch) visible++;
+    });
+
+    // Hide separators with no visible children
+    seps.forEach(sep => {
+        let nx = sep.nextElementSibling;
+        let hasVisible = false;
+        while (nx && !nx.classList.contains('date-separator')) {
+            if (nx.classList.contains('history-card') && nx.style.display !== 'none') hasVisible = true;
+            nx = nx.nextElementSibling;
+        }
+        sep.style.display = hasVisible ? 'flex' : 'none';
+    });
+
+    document.getElementById('emptyState').classList.toggle('d-none', visible > 0);
+}
+
+function openSheet(title, amount, amtClass, iconClass, iconStyle, date, type, provider, status, sign) {
+    document.getElementById('dTitle').textContent = title;
+    const dAmt = document.getElementById('dAmount');
+    dAmt.textContent = (sign === '-' ? '- ' : '+ ') + amount;
+    dAmt.className = amtClass;
+
+    const dIcon = document.getElementById('dIcon');
+    dIcon.style.cssText = 'width:60px;height:60px;font-size:1.4rem;';
+    dIcon.innerHTML = `<i class="bi ${iconClass} ${iconStyle.split(' ').pop()}"></i>`;
+    dIcon.style.background = sign === '+' ? 'rgba(25,135,84,0.12)' : 'rgba(220,53,69,0.1)';
+
+    const ref = '#TXN' + Math.floor(Math.random() * 900000 + 100000);
+    document.getElementById('dRows').innerHTML = `
+        <div class="det-row"><span style="color:var(--text-muted);">التاريخ والوقت</span><span class="fw-medium">${date}</span></div>
+        <div class="det-row"><span style="color:var(--text-muted);">نوع العملية</span><span class="fw-medium">${type}</span></div>
+        <div class="det-row"><span style="color:var(--text-muted);">المزود / الشبكة</span><span class="fw-medium">${provider}</span></div>
+        <div class="det-row"><span style="color:var(--text-muted);">الرسوم</span><span class="fw-medium text-success">مجاني</span></div>
+        <div class="det-row"><span style="color:var(--text-muted);">الحالة</span><span class="fw-bold text-success">${status} ✓</span></div>
+        <div class="det-row"><span style="color:var(--text-muted);">المرجع</span><span style="font-family:monospace;font-size:0.73rem;">${ref}</span></div>
+    `;
+    document.getElementById('detailSheet').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeSheet() {
+    document.getElementById('detailSheet').classList.remove('open');
+    document.body.style.overflow = '';
+}
+</script>
+</body>
+</html>

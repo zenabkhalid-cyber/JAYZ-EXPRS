@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دفع المشتريات المطور</title>
+    <link rel="stylesheet" href="css/bootstrap.rtl.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/paragram10.css">
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header d-flex justify-content-between align-items-center mb-4">
+      
+        <a href="paragram5.html" style="color: white;"><i class="bi bi-chevron-right"></i></a>
+        <h5 class="m-0 fw-bold">دفع المشتريات</h5>
+        <div style="width: 24px;"></div>
+    </div>
+
+    <div class="row g-0 mb-4">
+        <div class="col-6 p-1">
+            <button class="btn-tab active" id="tabJeeb">عبر جيب</button>
+        </div>
+        <div class="col-6 p-1">
+            <button class="btn-tab" id="tabOther">عبر محافظ أخرى</button>
+        </div>
+    </div>
+
+    <div id="sectionJeeb">
+        <label class="input-label">حساب المحفظة</label>
+        <div class="input-group mb-3 custom-input-group">
+            <button class="btn" id="toggleBalance"><i class="far fa-eye-slash text-danger" id="eyeIcon"></i></button>
+            <select class="form-select">
+                <option id="balanceOption">ريال يمني | 50,000</option>
+                <option id="balanceOption">ريال  سعودي | 50,000</option>
+                <option id="balanceOption"> دولار امريكي | 50,000</option>
+            </select>
+        </div>
+
+        <div class="d-flex gap-2 mb-3 position-relative">
+             <div class="input-group custom-input-group flex-grow-1">
+                <span class="input-group-text"><i class="fas fa-qrcode text-danger"></i></span>
+                <input type="text" class="form-control" placeholder="رقم نقطة البيع" id="posNumber">
+            </div>
+            
+            <button class="btn side-btn" id="favBtn">
+                <i class="far fa-heart"></i>
+            </button>
+            
+            <div class="dropdown-favorites" id="favList">
+                <ul>
+                    <li onclick="setPOS('100200')">سوبر ماركت السعيد (100200)</li>
+                    <li onclick="setPOS('300400')">محطة الأمانة (300400)</li>
+                    <li onclick="setPOS('555666')">مطعم  الامجاد (555666)</li>
+                </ul>
+            </div>
+        </div>
+
+        <input type="number" class="form-control mb-3 custom-input"id="amountField" placeholder="المبلغ">
+        
+        <input type="text" class="form-control mb-4 custom-input" placeholder="ملاحظات">
+        <button class="btn btn-primary w-100 continue-btn" id="payBtn">استمرار</button>
+    </div>
+  <div id="successLayer" class="success-overlay">
+    <div class="success-content">
+        <div class="check-circle">
+            <i class="fas fa-check"></i>
+        </div>
+        <h3 class="success-text">نجحت العملية</h3>
+    </div>
+</div>
+
+    <div id="sectionOther" class="hidden-section text-center p-5">
+        <i class="fas fa-wallet fs-1 mb-3 text-secondary"></i>
+        <p>قريباً.. خدمة الربط مع المحافظ الأخرى</p>
+        <button class="btn btn-outline-light btn-sm" onclick="location.reload()">العودة للخلف</button>
+    </div>
+</div>
+
+<script>
+    
+document.addEventListener('DOMContentLoaded', function () {
+    const payBtn = document.getElementById('payBtn');
+    const successLayer = document.getElementById('successLayer');
+    const amountField = document.getElementById('amountField'); // تأكد أن هذا الـ ID موجود في الـ input
+
+    if (payBtn) {
+        payBtn.addEventListener('click', function () {
+            // التحقق الآمن لمنع الخطأ الأحمر (Null Error)
+            if (!amountField) {
+                console.error("خطأ: لم يتم العثور على حقل المبلغ. تأكد من وجود id='amountField'");
+                return;
+            }
+
+            if (amountField.value === "" || amountField.value <= 0) {
+                alert("يرجى إدخال المبلغ أولاً");
+                return;
+            }
+
+            // بدء التحميل
+            payBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> جاري المعالجة...';
+            payBtn.disabled = true;
+
+            setTimeout(() => {
+                // إظهار علامة الصح في المنتصف
+                if (successLayer) {
+                    successLayer.style.display = 'flex';
+                }
+
+                // إخفاء الشاشة بعد 3 ثوانٍ والعودة للطبيعي
+                setTimeout(() => {
+                    if (successLayer) successLayer.style.display = 'none';
+                    payBtn.innerHTML = 'استمرار';
+                    payBtn.disabled = false;
+                    amountField.value = ""; 
+                }, 3000);
+
+            }, 2000);
+        });
+    }
+});
+
+    // 1. منطق إظهار وإخفاء الرصيد (شكل العين)
+    const toggleBalance = document.getElementById('toggleBalance');
+    const eyeIcon = document.getElementById('eyeIcon');
+    const balanceOption = document.getElementById('balanceOption');
+    let isHidden = true;
+
+    // إخفاء الرصيد عند البداية
+    balanceOption.innerText = "ريال يمني | *";
+
+    toggleBalance.addEventListener('click', () => {
+        if(isHidden) {
+            balanceOption.innerText = "ريال يمني | 50,000"; // المبلغ الحقيقي
+            eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            
+            balanceOption.innerText = " رسال سعودي| 50,000"; // المبلغ الحقيقي
+            eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+              balanceOption.innerText = " دولار امريكي| 50,000"; // المبلغ الحقيقي
+            eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+        } else {
+            balanceOption.innerText = "ريال يمني | *";
+            eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            balanceOption.innerText = "ريال سعودي | *";
+            eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+             balanceOption.innerText = " دولار امريكي | *";
+            eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+        }
+        isHidden = !isHidden;
+    });
+
+    // 2. منطق التنقل بين التبويبات
+    const tabJeeb = document.getElementById('tabJeeb');
+    const tabOther = document.getElementById('tabOther');
+    const sectionJeeb = document.getElementById('sectionJeeb');
+    const sectionOther = document.getElementById('sectionOther');
+    tabOther.addEventListener('click', () => {
+        tabOther.classList.add('active');
+        tabJeeb.classList.remove('active');
+        sectionJeeb.classList.add('hidden-section');
+        sectionOther.classList.remove('hidden-section');
+    });
+
+    tabJeeb.addEventListener('click', () => {
+        tabJeeb.classList.add('active');
+        tabOther.classList.remove('active');
+        sectionOther.classList.add('hidden-section');
+        sectionJeeb.classList.remove('hidden-section');
+    });
+
+    // 3. منطق قائمة المفضلة
+    const favBtn = document.getElementById('favBtn');
+    const favList = document.getElementById('favList');
+    const posInput = document.getElementById('posNumber');
+
+    favBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        favList.style.display = favList.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // إغلاق القائمة عند الضغط في أي مكان آخر
+    document.addEventListener('click', () => { favList.style.display = 'none'; });
+
+    // وظيفة اختيار رقم من المفضلة
+    function setPOS(number) {
+        posInput.value = number;
+        favList.style.display = 'none';
+    }
+    
+</script>
+
+</body>
+</html> 

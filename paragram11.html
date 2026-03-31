@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سحب نقدي</title>
+    <link rel="stylesheet" href="css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/paragram7.css">
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="header-title flex-column align-items-end">
+        <div class="d-flex justify-content-between w-100 align-items-center mb-3">
+             <a href="paragram5.html" class="text-white"><i class="bi bi-chevron-right"></i></a>
+             <h5 class="m-0">سحب نقدي</h5>
+        </div>
+        
+        <button class="btn-atm-locations" id="locationBtn">
+    مواقع الصرافات <i class="bi bi-map ms-1"></i>
+</button>
+    </div>
+
+    <a href="card.html" class="transfer-card">
+        <span class="card-text">طلب سحب نقدي</span>
+        <div class="icon-box">
+            <i class="bi bi-cash-stack"></i>
+            <!-- <i class="bi bi-dot red-arrow" style="font-size: 2rem !important; bottom: -5px;"></i> -->
+        </div>
+    </a>
+
+    <a href="card1.html" class="transfer-card">
+        <span class="card-text">سحب من الصراف الآلي YKB</span>
+        <div class="icon-box">
+             <span class="text-info fw-bold" style="font-size: 0.7rem;">YKB</span>
+        </div>
+    </a>
+
+    <a href="card2.html" class="transfer-card">
+        <span class="card-text">سحب من الصراف الآلي كاك بنك</span>
+        <div class="icon-box">
+             <span class="text-warning fw-bold" style="font-size: 0.5rem; text-align: center;">CAC BANK</span>
+        </div>
+    </a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    
+    // 1. منطق زر التحديث
+    const refreshBtn = document.getElementById('refreshBtn');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', function() {
+            // إضافة تأثير دوران للأيقونة
+            const icon = this.querySelector('i');
+            if(icon) icon.classList.add('bi-spin'); 
+            
+            // تحديث الصفحة بعد فترة قصيرة
+            setTimeout(() => {
+                location.reload();
+            }, 500);
+        });
+    }
+
+    // 2. تفعيل أي روابط فارغة للتجربة فقط
+    const links = document.querySelectorAll('a[href="#"]');
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log("تم الضغط على: " + this.innerText);
+        });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- 1. منطق زر التحديث ---
+    const refreshBtn = document.getElementById('refreshBtn');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', function() {
+            // إضافة تأثير دوران للأيقونة
+            const icon = this.querySelector('i');
+            if (icon) {
+                icon.style.transition = "transform 0.5s ease";
+                icon.style.transform = "rotate(360deg)";
+            }
+            
+            // إعادة تحميل الصفحة بعد 400 مللي ثانية
+            setTimeout(() => {
+                location.reload();
+            }, 400);
+        });
+    }
+
+    // --- 2. منطق مواقع الصرافات والبحث عن الأقرب ---
+    const locationBtn = document.getElementById('locationBtn');
+    if (locationBtn) {
+        locationBtn.addEventListener('click', function() {
+            const hasPermission = localStorage.getItem('locationPermissionGranted');
+
+            // دالة البحث والتوجيه
+       const findAndRedirect = () => {
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            
+            // تأكد من استخدام علامة الـ Backtick (  ) المحيطة بالرابط بالكامل
+            const mapsUrl = `https://www.google.com/maps/search/ATM/@${lat},${lng},15z`;
+            
+            window.location.href = mapsUrl;
+        }, 
+        function(error) {
+            alert("فشل الحصول على موقعك، يرجى التأكد من تفعيل الـ GPS");
+        }
+    );
+};
+
+            if (!hasPermission) {
+                // المرة الأولى: طلب إذن رسمي
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            localStorage.setItem('locationPermissionGranted', 'true');
+                            alert("تم السماح بالوصول بنجاح! جاري البحث عن أقرب صراف...");
+                            findAndRedirect();
+                        }, 
+                        function(error) {
+                            alert("يجب السماح بتحديد الموقع لتتمكن من رؤية أقرب صراف.");
+                        }
+                    );
+                } else {
+                    alert("متصفحك لا يدعم خاصية تحديد الموقع.");
+                }
+            } else {
+                // موافقة مسبقة: توجه مباشر
+                findAndRedirect();
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
